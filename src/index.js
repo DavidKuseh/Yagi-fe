@@ -5,10 +5,9 @@ import App from './App';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 
-import countReducer from '../src/redux-store/reducers/CountReducer';
 
 const bigStore = combineReducers({
-  count: countReducer
+  
 });
 
 const store = createStore(

@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
 
-import Counter from '../src/Components/Counter';
+import Register from '../src/Components/Register';
+import Login from '../src/Components/Login';
 
 function App() {
   return (
     <div className="App">
-      <Counter />
+      <Register />
+      <Login />
     </div>
   );
 }
