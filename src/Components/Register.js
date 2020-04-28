@@ -1,68 +1,92 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from 'react-redux';
 import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-const Register = (props) => {
-    const [newUser, setNewUser] = useState({ 
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: ""
-    })
-
-    const handleChange = event => {
-        event.preventDefault();
-        const {name, value} = event.target;
-        setNewUser({...newUser, [name]: value})
-    };
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        axios.post("http://localhost:5000/register")
-            .then(res => {
-                console.log(res)
-            })
+const Register = ( success ) => {
+    const formik = useFormik({
+        initialValues: {
+            firstName: "",
+            lastName: "",
+            email:"",
+            password:""
+        },
+        validationSchema: Yup.object({
+            firstName: Yup.string()
+            .max(25, "Must be 25 characters or less")
+            .required("Required"),
+            lastName: Yup.string()
+            .max(25, "Must be 25 characters or less")
+            .required("Required"),
+            email: Yup.string()
+            .email("Invalid email address")
+            .required(),
+            password: Yup.string()
+            .required("required")
+        }),
+        onSubmit: values => {
+            axios
+            .post("http://localhost:5000/api/auth/register", values)
+            .then(res => console.log(res))
             .catch(error => console.log(error))
-    }
-
+        }
+    });
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label>First name: </label>
-                    <input 
-                        type='text' 
-                        name='first_name' 
-                        onChange={handleChange} 
-                        value = {newUser.firstName}
-                        placeholder='Enter first name'
-                    />
-                <label>Last name: </label>
-                    <input 
-                        type='text' 
-                        name='last_name' 
-                        onChange={handleChange} 
-                        value= {newUser.lastName}
-                        placeholder='Enter first name'
-                    />
-                <label>Email: </label>
-                    <input 
-                        type='email' 
-                        name='email' 
-                        onChange={handleChange}
-                        value= {newUser.email} 
-                        placeholder='Enter email'
-                    />
-                <label>Password: </label>
-                    <input 
-                        type='password' 
-                        name='password' 
-                        onChange={handleChange} 
-                        value = {newUser.password}
-                        placeholder='Enter password'
-                    />
-                <button onClick={handleSubmit}>Create Account</button>
-            </form>
-        </div>
-    );
+        <form onSubmit={formik.handleSubmit}>
+            <label htmlFor="firstName">First Name</label>
+            <input 
+                id ="firstName"
+                name="firstName"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.firstName}
+            />
+            {formik.touched.firstName && formik.errors.firstName ? (
+                <div>{formik.errors.lastName}</div>
+            ) : null}
+            <label htmlFor="lastName">Last Name</label>
+            <input 
+                id ="lastName"
+                name="lastName"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.lastName}
+            />
+            {formik.touched.lastName && formik.errors.lastName ? (
+                <div>{formik.errors.lastName}</div>
+            ) : null}
+            <label htmlFor="email">Email</label>
+            <input 
+                id ="email"
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email ? (
+                <div>{formik.errors.email}</div>
+            ) : null}
+            <label htmlFor="password">Password</label>
+            <input 
+                id ="password"
+                name="password"
+                type="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+            />
+            {formik.touched.password && formik.errors.password ? (
+                <div>{formik.errors.password}</div>
+            ) : null}
+            <button type="submit">Submit</button>
+        </form>
+    )
+}
+
+const mapStateToProps = store => {
+    return {
+        success : store.auth.register_success
+    };
 };
 
-export default Register;
+export default connect(mapStateToProps)(Register);
