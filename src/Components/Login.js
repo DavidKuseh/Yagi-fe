@@ -1,8 +1,34 @@
 import React from "react";
 import { connect } from 'react-redux';
-import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import styled from "styled-components";
+
+const LoginStyle = styled.div`
+    form {
+        background: #59E087;
+        width: 34%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        
+        input {
+            width: 65%;
+            border: 3px solid #000000;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            margin: 1rem auto;
+            padding: 0.2rem;
+        }
+
+        button {
+            border: 1px solid #000000;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            width: 25%;
+            margin: 1rem auto;
+        }
+    }
+`
 
 const Login = ( success ) => {
     const formik = useFormik({
@@ -17,39 +43,40 @@ const Login = ( success ) => {
             password: Yup.string()
             .required("required")
         }),
-        onSubmit: values => {
-            axios
-            .post("http://localhost:5000/api/auth/login", values)
-            .then(res => console.log(res))
-            .catch(error => console.log(error))
+        onSubmit: () => {
+            console.log("Login successful")
         }
     });
     return (
+        <LoginStyle>
         <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="email">Email</label>
+            <h3>Sign in</h3>
             <input 
                 id ="email"
                 name="email"
                 type="email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
+                placeholder="Email"
             />
             {formik.touched.email && formik.errors.email ? (
                 <div>{formik.errors.email}</div>
             ) : null}
-            <label htmlFor="password">Password</label>
             <input 
                 id ="password"
                 name="password"
                 type="password"
                 onChange={formik.handleChange}
                 value={formik.values.password}
+                placeholder="Password"
             />
             {formik.touched.password && formik.errors.password ? (
                 <div>{formik.errors.password}</div>
             ) : null}
             <button type="submit">Submit</button>
+            <p>Don't have an account? Join <a href="http://www.google.com" target="_blank" rel="noopener noreferrer">here</a> </p>
         </form>
+        </LoginStyle>
     )
 }
 

@@ -1,8 +1,34 @@
 import React from "react";
 import { connect } from 'react-redux';
-import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import styled from "styled-components";
+
+const RegisterStyle = styled.div`
+    form {
+        background: #59E087;
+        width: 34%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        
+        input {
+            width: 65%;
+            border: 3px solid #000000;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            margin: 1rem auto;
+            padding: 0.2rem;
+        }
+
+        button {
+            border: 1px solid #000000;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            width: 25%;
+            margin: 1rem auto;
+        }
+    }
+`
 
 const Register = ( success ) => {
     const formik = useFormik({
@@ -25,61 +51,62 @@ const Register = ( success ) => {
             password: Yup.string()
             .required("required")
         }),
-        onSubmit: values => {
-            axios
-            .post("http://localhost:5000/api/auth/register", values)
-            .then(res => console.log(res))
-            .catch(error => console.log(error))
+        onSubmit: () => {
+            console.log("Registration successful")
         }
     });
     return (
+        <RegisterStyle>
         <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="firstName">First Name</label>
+        <h3>Sign Up</h3>
             <input 
                 id ="firstName"
                 name="firstName"
                 type="text"
                 onChange={formik.handleChange}
                 value={formik.values.firstName}
+                placeholder="First name"
             />
             {formik.touched.firstName && formik.errors.firstName ? (
                 <div>{formik.errors.lastName}</div>
             ) : null}
-            <label htmlFor="lastName">Last Name</label>
             <input 
                 id ="lastName"
                 name="lastName"
                 type="text"
                 onChange={formik.handleChange}
                 value={formik.values.lastName}
+                placeholder="Last name"
             />
             {formik.touched.lastName && formik.errors.lastName ? (
                 <div>{formik.errors.lastName}</div>
             ) : null}
-            <label htmlFor="email">Email</label>
             <input 
                 id ="email"
                 name="email"
                 type="email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
+                placeholder="Email"
             />
             {formik.touched.email && formik.errors.email ? (
                 <div>{formik.errors.email}</div>
             ) : null}
-            <label htmlFor="password">Password</label>
             <input 
                 id ="password"
                 name="password"
                 type="password"
                 onChange={formik.handleChange}
                 value={formik.values.password}
+                placeholder="Password"
             />
             {formik.touched.password && formik.errors.password ? (
                 <div>{formik.errors.password}</div>
             ) : null}
             <button type="submit">Submit</button>
+        <p>Already have an account? Sign in <a href="http://www.google.com" target="_blank" rel="noopener noreferrer">here</a></p>
         </form>
+        </RegisterStyle>
     )
 }
 
