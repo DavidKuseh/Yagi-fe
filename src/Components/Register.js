@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,7 +9,7 @@ const RegisterStyle = styled.div`
     form {
         background: #59E087;
         width: 34%;
-        margin: auto;
+        margin: 20vh auto;
         display: flex;
         flex-direction: column;
         
@@ -104,7 +105,7 @@ const Register = ( success ) => {
                 <div>{formik.errors.password}</div>
             ) : null}
             <button type="submit">Submit</button>
-        <p>Already have an account? Sign in <a href="http://www.google.com" target="_blank" rel="noopener noreferrer">here</a></p>
+        <p>Already have an account? Sign in <Link to= '/login'>here</Link></p>
         </form>
         </RegisterStyle>
     )
