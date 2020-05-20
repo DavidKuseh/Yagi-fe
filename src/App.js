@@ -2,9 +2,9 @@ import React from 'react';
 import './App.css';
 
 import Main from '../src/Components/Main';
-// import Home from '../src/Components/Home';
-// import Products from '../src/Components/Products';
-// import ContactUs from '../src/Components/ContactUs';
+// import Navigation from '../src/Components/Navigation';
+// import Footer from '../src/Components/Footer';
+
 
 function App() {
   return (
@@ -13,6 +13,8 @@ function App() {
       <Route exact path= '/products' component= {Products} />
       <Route exact path= '/contact' component= {ContactUs} /> */}
       <Main />
+      {/* <Navigation />
+      <Footer /> */}
     </div>
   );
 }

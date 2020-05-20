@@ -1,14 +1,16 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 
+
 const LoginStyle = styled.div`
     form {
         background: #59E087;
         width: 34%;
-        margin: auto;
+        margin: 20vh auto;
         display: flex;
         flex-direction: column;
         
@@ -74,7 +76,7 @@ const Login = ( success ) => {
                 <div>{formik.errors.password}</div>
             ) : null}
             <button type="submit">Submit</button>
-            <p>Don't have an account? Join <a href="http://www.google.com" target="_blank" rel="noopener noreferrer">here</a> </p>
+            <p>Don't have an account? Join <Link to= '/register'>here</Link></p>
         </form>
         </LoginStyle>
     )

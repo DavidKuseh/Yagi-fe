@@ -4,14 +4,15 @@ import styled from 'styled-components';
 
 import Products from '../Components/Products';
 import ContactUs from '../Components/ContactUs';
-import personIcon from '../Assets/Icons/person.png'
-import cartIcon from '../Assets/Icons/cart.png'
+import Login from '../Components/Login';
+import Register from '../Components/Register';
+import Home from '../Components/Home';
 
 const NavStyle = styled.div`
     background: #59E087;
     display: flex;
     align-items: center;
-    margin: auto;
+    margin:0 auto;
     // position: fixed;
     top: 0;
     width: 100%;
@@ -49,10 +50,19 @@ const NavStyle = styled.div`
         .nav-icons {
             display: flex;
             margin-left: 4rem;
-            align-items: center;
+            // align-items: center;
 
-            img {
-                margin-left: 1.5rem;
+            a{
+                align-items: center;
+                background: #59E087;
+                border:  0.2 rem solid #59E087;
+                text-decoration: none;
+                padding: 0.5rem 1.6rem;
+                border-radius: 1rem;
+            }
+
+            a:hover {
+                background: white;
             }
         }
     }
@@ -73,15 +83,14 @@ const Navigation = () => {
                         />
                         <button>Search</button>
                     </div>
-                    <div className = 'nav-icons'>
-                            <img src={personIcon} alt='profile' width='25px' height='25px'/>
-                            <p>Log in</p>
-                            <img src={cartIcon} alt='cart'/>
-                            <p>Cart</p>
+                    <div className = 'nav-icons'>       
+                        <Link to= '/login'>Log in</Link>
                     </div>
                 </section>
             </NavStyle>
-            {/* <Route exact path= '/' component={Home} /> */}
+            <Route exact path= '/login' component={Login} />
+            <Route exact path= '/register' component={Register} />
+            <Route exact path= '/' component={Home} />
             <Route exact path= '/products' component={Products} />
             <Route exact path= '/contact' component={ContactUs} />
         </>

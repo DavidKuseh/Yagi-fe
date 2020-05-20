@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  /* min-height: 100%;
+  margin-bottom: -10rem;
+  flex: 1 0 auto; */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -37,7 +43,8 @@
   }
 }
 
-body > #root > div {
+body, html {
+  margin: 0;
   height: 100vh;
 }
 
