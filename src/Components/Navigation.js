@@ -8,20 +8,23 @@ import Login from '../Components/Login';
 import Register from '../Components/Register';
 import Home from '../Components/Home';
 
+import Accessories from '../Pages/Accessories';
+import Computers from '../Pages/Computers';
+import Games from '../Pages/Games';
+import Phones from '../Pages/Phones';
+import Services from '../Pages/Services';
+
 const NavStyle = styled.div`
     background: #59E087;
     display: flex;
     align-items: center;
     margin:0 auto;
-    // position: fixed;
     top: 0;
     width: 100%;
-    // overflow: hidden;
 
     .nav-container {
         display: flex;
         align-items: center;
-        // padding: 2rem 0;
         margin: auto;
 
         .search {
@@ -50,7 +53,6 @@ const NavStyle = styled.div`
         .nav-icons {
             display: flex;
             margin-left: 4rem;
-            // align-items: center;
 
             a{
                 align-items: center;
@@ -93,6 +95,11 @@ const Navigation = () => {
             <Route exact path= '/' component={Home} />
             <Route exact path= '/products' component={Products} />
             <Route exact path= '/contact' component={ContactUs} />
+            <Route exact path = '/accessories' component = {Accessories} />
+            <Route exact path = '/computers' component = {Computers} />
+            <Route exact path = '/games' component = {Games} />
+            <Route exact path = '/phones' component = {Phones} />
+            <Route exact path = '/services' component = {Services} />
         </>
     );
 };
