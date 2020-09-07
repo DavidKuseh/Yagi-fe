@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import Navigation from '../Components/Navigation';
 import Footer from '../Components/Footer';
-// import Home from '../Components/Home';
 
 const MainStyle = styled.div`
     height: 100vh;
@@ -12,12 +11,10 @@ const MainStyle = styled.div`
   }
 `
     
-
 const Main = () => {
     return (
         <MainStyle>
             <Navigation />
-            
             <Footer />
         </MainStyle>
     );
