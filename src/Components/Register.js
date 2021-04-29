@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { register } from "../redux-store/actions/auths";
 import { connect } from 'react-redux';
-import { useFormik } from "formik";
+import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 
@@ -31,90 +32,79 @@ const RegisterStyle = styled.div`
     }
 `
 
-const Register = ( success ) => {
-    const formik = useFormik({
-        initialValues: {
-            firstName: "",
-            lastName: "",
-            email:"",
-            password:""
-        },
-        validationSchema: Yup.object({
-            firstName: Yup.string()
-            .max(25, "Must be 25 characters or less")
-            .required("Required"),
-            lastName: Yup.string()
-            .max(25, "Must be 25 characters or less")
-            .required("Required"),
-            email: Yup.string()
-            .email("Invalid email address")
-            .required(),
-            password: Yup.string()
-            .required("required")
-        }),
-        onSubmit: () => {
-            console.log("Registration successful")
-        }
-    });
-    return (
-        <RegisterStyle>
-        <form onSubmit={formik.handleSubmit}>
-        <h3>Sign Up</h3>
-            <input 
-                id ="firstName"
-                name="firstName"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.firstName}
-                placeholder="First name"
+const Register = ({ touched, errors }) => {
+  return (
+    <RegisterStyle>
+      <h3>Sign Up</h3>
+      <Form>
+          <div className="input">
+            {touched.firstName && errors.firstName}
+            <Field
+              name="firstName"
+              type="text"
+              placeholder="First name"
             />
-            {formik.touched.firstName && formik.errors.firstName ? (
-                <div>{formik.errors.lastName}</div>
-            ) : null}
-            <input 
-                id ="lastName"
-                name="lastName"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.lastName}
-                placeholder="Last name"
+          </div>
+          <div className="input">
+            {touched.lastName && errors.lastName}
+            <Field
+              name="lastName"
+              type="text"
+              placeholder="Last name"
             />
-            {formik.touched.lastName && formik.errors.lastName ? (
-                <div>{formik.errors.lastName}</div>
-            ) : null}
-            <input 
-                id ="email"
-                name="email"
-                type="email"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                placeholder="Email"
+          </div>
+          <div className="input">
+            {touched.email && errors.email}
+            <Field
+              name="email"
+              type="email"
+              placeholder="Email"
             />
-            {formik.touched.email && formik.errors.email ? (
-                <div>{formik.errors.email}</div>
-            ) : null}
-            <input 
-                id ="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                placeholder="Password"
+          </div>
+          <div className="input">
+            {touched.password && errors.password}
+            <Field
+              name="password"
+              type="password"
+              placeholder="Password"
             />
-            {formik.touched.password && formik.errors.password ? (
-                <div>{formik.errors.password}</div>
-            ) : null}
-            <button type="submit">Submit</button>
-        <p>Already have an account? Sign in <Link to= '/login'>here</Link></p>
-        </form>
-        </RegisterStyle>
-    )
+          </div>
+          <button type="submit">Submit</button>
+
+          <p>Already have an account? Sign in <Link to='/login'>here</Link></p>
+      </Form>
+    </RegisterStyle>
+  )
 }
 
-const mapStateToProps = store => {
-    return {
-        success : store.auth.register_success
-    };
-};
 
-export default connect(mapStateToProps)(Register);
+const FormikForm = withFormik({
+  mapPropsToValues({ firstName, lastName, email, password }) {
+    return {
+      firstName: firstName || "",
+      lastName: lastName || "",
+      email: email || "",
+      password: password || ""
+    };
+  },
+  validationSchema: Yup.object({
+    firstName: Yup.string()
+      .max(25, "Must be 25 characters or less")
+      .required("Required"),
+    lastName: Yup.string()
+      .max(25, "Must be 25 characters or less")
+      .required("Required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required(),
+    password: Yup.string()
+      .required("required")
+  }),
+  handleSubmit(values, { props }) {
+    props.register(values, props.history)
+  }
+})(Register);
+
+
+export default connect(state => state, { register })(FormikForm);
+
