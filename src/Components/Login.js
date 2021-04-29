@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { login } from "../redux-store/actions/auths";
 import { connect } from 'react-redux';
-import { useFormik } from "formik";
+import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
 
@@ -32,60 +33,52 @@ const LoginStyle = styled.div`
     }
 `
 
-const Login = ( success ) => {
-    const formik = useFormik({
-        initialValues: {
-            email:"",
-            password:""
-        },
-        validationSchema: Yup.object({
-            email: Yup.string()
-            .email("Invalid email address")
-            .required(),
-            password: Yup.string()
-            .required("required")
-        }),
-        onSubmit: () => {
-            console.log("Login successful")
-        }
-    });
+const Login = ({touched, errors}) => {
+    
     return (
         <LoginStyle>
-        <form onSubmit={formik.handleSubmit}>
-            <h3>Sign in</h3>
-            <input 
-                id ="email"
-                name="email"
-                type="email"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                placeholder="Email"
-            />
-            {formik.touched.email && formik.errors.email ? (
-                <div>{formik.errors.email}</div>
-            ) : null}
-            <input 
-                id ="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                placeholder="Password"
-            />
-            {formik.touched.password && formik.errors.password ? (
-                <div>{formik.errors.password}</div>
-            ) : null}
+        <h3>Sign in</h3>
+        <Form>
+            <div className="input">
+                {touched.email && errors.email}
+                <Field 
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                />
+            </div>
+            <div className="input">
+                {touched.password && touched.password}
+                <Field
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                />
+            </div>
             <button type="submit">Submit</button>
             <p>Don't have an account? Join <Link to= '/register'>here</Link></p>
-        </form>
+        </Form>
         </LoginStyle>
     )
 }
 
-const mapStateToProps = store => {
-    return {
-        success : store.auth.login_success
-    };
-};
+const FormikForm = withFormik({
+    mapPropsToValues({ email, password }) {
+        return {
+            email:email || "",
+            password: password || ""
+        }
+    },
+    validationSchema: Yup.object({
+        email: Yup.string()
+        .email("Invalid email address")
+        .required(),
+        password: Yup.string()
+        .required("required")
+    }),
+    handleSubmit(values, { props }) {
+        props.login(values, props.history)
+      }
+})(Login);
 
-export default connect(mapStateToProps)(Login);
+export default connect(state => state, { login })(FormikForm);
