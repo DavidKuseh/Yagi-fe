@@ -12,7 +12,7 @@ export const register = (credentials, history) => dispatch => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("userID", res.data.user.id);
           dispatch({ type: types.REGISTER_SUCCESS, payload: res.data });
-          history.push("/");
+          history.push("/login");
       })
       .catch(error => {
           console.log(error);
@@ -38,3 +38,4 @@ export const login = (credentials, history) => dispatch => {
           dispatch({ type: types.LOGIN_FAILURE, payload: error.message });
       });
 };
+

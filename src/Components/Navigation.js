@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, Route} from 'react-router-dom';
+import {Link, Route, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Products from '../Components/Products';
@@ -54,7 +54,7 @@ const NavStyle = styled.div`
             display: flex;
             margin-left: 4rem;
 
-            a{
+            button{
                 align-items: center;
                 background: #59E087;
                 border:  0.2 rem solid #59E087;
@@ -63,7 +63,7 @@ const NavStyle = styled.div`
                 border-radius: 1rem;
             }
 
-            a:hover {
+            button:hover {
                 background: white;
             }
         }
@@ -71,9 +71,18 @@ const NavStyle = styled.div`
 `
 
 const Navigation = () => {
+
+    const isAuth = localStorage.getItem("token");
+    const history = useHistory();
+
+    const logout = () => {
+        localStorage.removeItem("token")
+        history.push("/login")
+    }
+
     return (
         <>
-            <NavStyle>
+            <NavStyle >
                 <section className= 'nav-container'>
                     <div className = 'links'>
                     <Link to= '/'><h2>Yagi</h2></Link>
@@ -86,7 +95,14 @@ const Navigation = () => {
                         <button>Search</button>
                     </div>
                     <div className = 'nav-icons'>       
-                        <Link to= '/login'>Log in</Link>
+                        {isAuth ? 
+                        (<button onClick={logout}>
+                            <Link to="/login">Log out</Link>
+                        </button>
+                        ):(
+                        <button>
+                            <Link to="/login">Log in</Link>
+                        </button>)}
                     </div>
                 </section>
             </NavStyle>
