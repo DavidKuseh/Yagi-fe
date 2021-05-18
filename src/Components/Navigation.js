@@ -7,6 +7,7 @@ import ContactUs from '../Components/ContactUs';
 import Login from '../Components/Login';
 import Register from '../Components/Register';
 import Home from '../Components/Home';
+import Profile from "../Components/Profile";
 
 import Accessories from '../Pages/Accessories';
 import Computers from '../Pages/Computers';
@@ -70,13 +71,13 @@ const NavStyle = styled.div`
     }
 `
 
-const Navigation = () => {
+const Navigation = (props) => {
 
     const isAuth = localStorage.getItem("token");
     const history = useHistory();
 
     const logout = () => {
-        localStorage.removeItem("token")
+        localStorage.clear()
         history.push("/login")
     }
 
@@ -96,9 +97,18 @@ const Navigation = () => {
                     </div>
                     <div className = 'nav-icons'>       
                         {isAuth ? 
-                        (<button onClick={logout}>
-                            <Link to="/login">Log out</Link>
-                        </button>
+                        (
+                        <div>
+                            <button>
+                                {/* <Link to="/profile">Hi {localStorage.getItem("firstname")}</Link> */}
+                                <Link to="/profile">Hi {props.firstName}</Link>
+                                {/* {console.log(auth)} */}
+
+                            </button>
+                            <button onClick={logout}>
+                                <Link to="/login">Log out</Link>
+                            </button>
+                        </div> 
                         ):(
                         <button>
                             <Link to="/login">Log in</Link>
@@ -109,6 +119,7 @@ const Navigation = () => {
             <Route exact path= '/login' component={Login} />
             <Route exact path= '/register' component={Register} />
             <Route exact path= '/' component={Home} />
+            <Route exact path= '/profile' component={Profile} />
             <Route exact path= '/products' component={Products} />
             <Route exact path= '/contact' component={ContactUs} />
             <Route exact path = '/accessories' component = {Accessories} />
